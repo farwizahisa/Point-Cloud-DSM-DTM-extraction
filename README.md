@@ -1,24 +1,26 @@
+# install packages
 install.packages("lidR")
 install.packages("Rtools")
 install.packages("rgdal")
 install.packages("raster")
 install.packages("RCSF")
 
+# read library
 library(lidR)
 library(raster)
 library(RCSF)
 
-setwd("C:/Users/Office/Documents/AAR/Project")
+# directory and read point cloud data
+setwd("PATH")
 las = readLAS("MatureLAS_utm47.las")
 plot(las)
 
+# classify ground and nonground
 las = classify_ground(las, csf())
 plot(las, color = "Classification")
 
-algo = pitfree(thresholds = c(0,10,20,30,40,50), subcircle = 0.2)
-chm = grid_canopy(las, 0.5, algo)
-
-#las <-normalize_height(las, tin())
+# normalize
+las <-normalize_height(las, tin())
 
 # Extract ground points
 ground_las <- las[las$Classification == 2, ]
